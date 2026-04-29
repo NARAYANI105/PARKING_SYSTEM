@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Parking System</title>
+
+    <style>
+        body { text-align: center; font-family: Arial; }
+
+        .section { display: none; margin-top: 20px; }
+
+        .direction {
+            padding: 10px;
+            margin: 5px;
+            background: lightgray;
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        .slots {
+            display: grid;
+            grid-template-columns: repeat(5, 40px);
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .slot { width: 40px; height: 40px; }
+
+        .free { background: green; }
+        .occupied { background: red; }
+    </style>
+</head>
+
+<body>
+
+<h1>PARKING_SYSTEM</h1>
+
+<button onclick="showVehicle('two')">Two Wheeler</button>
+<button onclick="showVehicle('four')">Four Wheeler</button>
+
+<!-- TWO -->
+<div id="two" class="section">
+    <h2>Two Wheeler</h2>
+
+    <div class="direction" onclick="showSlots('two','left')">Left</div>
+    <div class="direction" onclick="showSlots('two','right')">Right</div>
+    <div class="direction" onclick="showSlots('two','straight')">Straight</div>
+
+    <div id="twoSlots" class="slots"></div>
+    <p id="twoResult"></p>
+</div>
+
+<!-- FOUR -->
+<div id="four" class="section">
+    <h2>Four Wheeler</h2>
+
+    <div class="direction" onclick="showSlots('four','left')">Left</div>
+    <div class="direction" onclick="showSlots('four','right')">Right</div>
+    <div class="direction" onclick="showSlots('four','straight')">Straight</div>
+
+    <div id="fourSlots" class="slots"></div>
+    <p id="fourResult"></p>
+</div>
+
+<script>
+const data = {
+    two: {
+        left: ["free","occupied","free","free","occupied"],
+        right: ["occupied","free","free","occupied","free"],
+        straight: ["free","free","occupied","occupied","free"]
+    },
+    four: {
+        left: ["occupied","occupied","free","free","free"],
+        right: ["free","occupied","free","occupied","free"],
+        straight: ["occupied","free","occupied","free","occupied"]
+    }
+};
+
+function showVehicle(type){
+    document.getElementById("two").style.display = "none";
+    document.getElementById("four").style.display = "none";
+
+    document.getElementById(type).style.display = "block";
+}
+
+function showSlots(vehicle, direction){
+    let container = document.getElementById(vehicle + "Slots");
+    let result = document.getElementById(vehicle + "Result");
+
+    container.innerHTML = "";
+
+    let slots = data[vehicle][direction];
+    let freeCount = 0;
+
+    slots.forEach(s => {
+        let div = document.createElement("div");
+        div.classList.add("slot", s);
+
+        if(s === "free") freeCount++;
+
+        container.appendChild(div);
+    });
+
+    result.innerText = "Free Slots: " + freeCount;
+}
+</script>
+
+</body>
+</html>
